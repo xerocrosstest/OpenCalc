@@ -1,0 +1,3 @@
+Open Calculus License
+
+This project is subject to the GNU Free Documentation License (version 1.3, attached) with the following additional clauses: none of the major publishing houses may distribute this work commercially, and if anyone forks this project, the fork is also subject to the previous clause and this one. That means all forks are recursively bound by the same constraint. No major publisher shall make a dime off this project. This especially includes Wiley. By submitting content to this project, you agree to release it to this Open Calculus project under this license.
