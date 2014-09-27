@@ -1,9 +1,17 @@
 \documentclass[11pt]{book} 
 \usepackage{amsmath, amsthm}
+\usepackage{amssymb}
 
+
+\usepackage{xcolor}
+
+\newcommand{\highlight}[1]{%
+  \colorbox{yellow!50}{$\displaystyle#1$}}
 
 \newtheorem{theorem}{Theorem}
-
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newtheorem{example}{Example}
 
 
 \usepackage{graphicx}
@@ -72,6 +80,181 @@ Baton Rouge, LA \\
 
 
 \chapter{Limits}     
+
+
+
+\section{Topology for Calculus, Lesson 1}
+
+
+
+An ``open interval'' is an elementary idea.  We say an interval $(a,b)$ is open when it does not include its endpoints.  Now we define a more general notion of ``open''.  
+
+
+
+
+\begin{definition}
+A set $U$ in the real numbers is \emph{open} if for any element $x$ in $U$ there is an $\epsilon$ small enough so that $(x-\epsilon , x+\epsilon)$ is contained in $U$.  
+
+
+\end{definition}
+
+
+
+This is best illustrated with examples.  
+
+\begin{example}
+Is an ``open interval'' \emph{ open} according to this definition?  (If not, that would be really confusing, but let's make sure.)
+\end{example}
+
+Refer to the picture.  For any $x$ in the interval, you can find a small $\epsilon$ so that the small open interval $(x-\epsilon , x+\epsilon)$ is contained inside $(a,b)$.  
+\begin{center}
+\includegraphics[width=4in]{toplec1_1.png}
+\end{center}
+
+So yes, intervals that are open in the ordinary sense are open in the sense we just defined.  
+
+
+\begin{example}
+Is a ``closed interval'' $[a,b]$ also \emph{open}?  Note that a closed interval includes its end points.
+
+\end{example}
+
+Here the answer is no because any open interval around $a$ no matter how small will contain values not in $[a,b]$.  It will contain some numbers less than $a$, and those are not in $[a,b]$.  There's a similar problem at $b$.  
+
+\begin{center}
+\includegraphics[width=4in]{toplec1_2.png}
+\end{center}
+
+\begin{example}
+Is $(-1,1)\cup (3,4)$ open?  
+\end{example}
+
+Yes, a union of open intervals is open.
+
+\begin{example}
+Is the set $\mathbb{Z}$ of integers open?
+\end{example}
+
+No.  Any open interval around an integer contains numbers that are not integers.  Imagine a small interval around the number 1.  Students are sometimes tempted to say a set is ``closed'' when it is not open.  That's not correct.  We don't say a set is closed when it's not open.  In math, \emph{closed} has a different meaning.  
+
+
+\begin{definition}
+The \emph{preimage} $f^{-1}(U)$ is the set of all points $x$ where $f(x)$ is in $U$.
+\end{definition}
+
+
+Note that $f$ does not have to have an inverse, and here $f^{-1}$ does not mean the inverse in that sense, but they are related ideas.  When talking about preimages, we always put a \emph{set} inside $f^{-1}$, like $f^{-1}(U)$.
+
+\begin{example}
+Let $f(x)=\sin(x)$.  What is $f^{-1}(0,\infty)$?  Hint: This is exactly the same as asking to solve the inequality $f(x) >0$.
+\end{example}
+
+
+\begin{center}
+\includegraphics[width=4in]{toplec1_3.png}
+\end{center}
+
+
+In the picture I shaded $(0,\infty)$ along the y-axis.  In the picture we see $(0,\pi)$ and $(2\pi,3\pi)$ are both in $f^{-1}(0,\infty)$.  Those are both open intervals.  Since $\sin(x)$ just repeats the same wave over and over, 
+
+$$f^{-1}(0,\infty) = \cdots (-4\pi,-3\pi)\cup (-2\pi,-\pi) \cup  (0,\pi) \cup  (2\pi,3\pi) \cup  (5\pi,6\pi) \cdots $$
+
+This set $f^{-1}(0,\infty)$ is open.  It's an infinite union of open intervals.  
+
+
+\begin{example}
+Still considering $f(x)=\sin(x)$, what is $f^{-1}[0,1]$?  This is exactly the same as solving the inequality $0\leq f(x) \leq 1$.  
+\end{example}
+
+The only difference between this example and the last one is that now the preimage $f^{-1}[0,1]$ contains the end points.  
+
+$$f^{-1}[0,1] = \cdots [-4\pi,-3\pi]\cup [-2\pi,-\pi] \cup  [0,\pi] \cup  [2\pi,3\pi] \cup  [5\pi,6\pi] \cdots $$
+
+When we take an open set $U$, the preimage $f^{-1}(U)$ is also open.  This is true in general.
+
+\begin{theorem}
+If $f$ is continuous (everywhere) and $U$ is open, then $f^{-1}(U)$ is open.
+\end{theorem}
+
+This is an \textbf{equivalent} formulation of the idea of continuity.  It's a more mature way to understand continuity.  
+
+
+Let's discuss the intuitive idea.  Below is a graph of a continuous function and an open set $U$.  By the picture, it certainly looks like $f^{-1}(U)$ is open, yes?  
+
+\begin{center}
+\includegraphics[width=4in]{toplec1_4.png}
+\end{center}
+
+Let's think a little about why it's open.  In the theorem, we do not assume that $U$ is an interval like in the picture.  To prove that $f^{-1}(U)$ is open, we need to show that for any $x$ in $f^{-1}(U)$ there is a little open interval around $x$ that is contained in $f^{-1}(U)$.
+
+\begin{center}
+\includegraphics[width=4in]{toplec1_5.png}
+\end{center}
+
+
+An interval like that will look like this.  In the next image we see a little interval in red.  Any time a value $z$ is in that red interval, the function values $f(z)$ are inside $U$.  
+
+\begin{center}
+\includegraphics[width=4in]{toplec1_6.png}
+\end{center}
+
+Let's take one more step toward a formal proof.  Recall that $f(x)$ is in $U$ and $U$ is open.  That means we can produce a little open interval around $f(x)$ that is inside $U$.  In the next picture, we see a little $\epsilon$ interval $(f(x)-\epsilon, f(x)+\epsilon)$.  These are ``y''-values, so they are along the y axis.  
+
+\begin{center}
+\includegraphics[width=4in]{toplec1_7.png}
+\end{center}
+
+
+Can we find a little $\delta$ interval around $x$ so that whenever $z$ is in  $(x-\delta,x+\delta)$ it follows that  $f(z)$ is in $(f(x)-\epsilon, f(x)+\epsilon)$?  If you are unsure, recall that this is exactly the definition of ``continuous at $x$''. 
+
+
+\begin{center}
+\includegraphics[width=4in]{toplec1_8.png}
+\end{center}
+
+
+If you understand this, then you will understand that the argument does not depend on our picture.  It works for any open set $U$.  
+
+
+\subsection{The Role of Topology in Calculus}
+
+Several of the most important ideas in calculus are basically topological---meaning to understand them the most natural thing is to use these ideas.  
+
+Two of the most important examples: (1) the Intermediate Value Theorem, (2) the Extreme Value Theorem.
+
+
+Here's why topology is useful in calculus.  So far we have defined everything \emph{pointwise}.  We defined continuity \emph{at x} and differentiability \emph{at x}, but some of the deeper theorems are about functions that are continuous \emph{everywhere}.  The Intermediate Value Theorem is not about any particular point, for example, and it's difficult to apply definitions of continuity that depend on some particular point $x$ when the theorem isn't about any particular point.  The alternative definition of continuous given in the theorem above allows us to take full advantage of functions that are continuous at every point in an interval.  
+
+The ``topological'' method is an alternative point of view that will make the deeper theorems clearer if you can come to understand this point of view.  
+
+
+
+\subsection{Exercises}
+
+Ask me for help at the beginning of class or during office hours if you need help with these.
+
+
+
+\begin{enumerate}
+\item
+Let $f(x)=\cos(x)$.  What is $f^{-1}(\{1\})$.  Here $\{1\}$ means the set containing just the number 1. Is $\{1\}$ open?  Is $f^{-1}(\{1\})$ open?
+
+
+
+
+\item
+Sketch an example of a function $f$ that is not continuous and some open set $U$ where $f^{-1}(U)$ is not open.  
+
+\item
+Refer to the theorem above about continuous functions.  If $U$ is not open, does that imply that $f^{-1}(U)$ is not open?
+
+\item
+Let $f(x)=x^2$.  Is $f$ continuous?  Let $U=(1,2)$. What is $f^{-1}(U)$?  Is $f^{-1}(U)$ open?  For this, don't just cite the theorem above, but convince yourself from the definition that it is open.
+
+
+
+\end{enumerate}
+
 
 
 \section{Exercises}
@@ -177,8 +360,11 @@ Observe we have just replaced $g(x+h)$ with $g(x) + hg'(x)$.  Next we multiply t
 \end{equation}
 
 The quotient on the left in  (\ref{3240972392408}) almost has the form of a difference quotient.  As $h\to 0$, we also see that $hg'(x)\to 0$ so 
-
 $$\lim_{h\to 0} \frac{f(g(x) + hg'(x))-f(g(x))}{hg'(x)}  = \lim_{h\to 0} \frac{f(g(x) + h)-f(g(x))}{h} = f'(g(x)).$$
+Those limits are the same because it doesn't really matter what symbol appears in the highlighted portion of the difference quotient: 
+$$\frac{f(g(x) + \highlight{hg\prime(x)})-f(g(x))}{\highlight{hg'(x)}}.$$
+It only matters that those two numbers are the \emph{same} and that they are going to zero in the limit.  That's why we had to multiply and divide by $g'(x)$.  We needed to have the same number in those two highlighted positions.  
+
 Thus $\frac{d}{dx}f(g(x)) = f'(g(x))g'(x)$.
 \end{proof}
 
