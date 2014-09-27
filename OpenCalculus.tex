@@ -1,4 +1,11 @@
 \documentclass[11pt]{book} 
+\usepackage{amsmath, amsthm}
+
+
+\newtheorem{theorem}{Theorem}
+
+
+
 \usepackage{graphicx}
              % Book class in 11 points
 \parindent0pt  \parskip10pt             % make block paragraphs
@@ -138,6 +145,44 @@ Explain in words why $$\lim_{x\to 0} x^2 \sin(2\pi/x)=0$$ (meaning the limit exi
 
 
 \chapter{Derivatives}  
+
+
+\section{The Chain Rule}
+
+
+\begin{theorem}
+If $f$ and $g$ are differentiable then $\frac{d}{dx}f(g(x)) = f'(g(x))g'(x)$.
+\end{theorem}
+
+
+The following proof sketch is intended to be illuminating rather than exactly precise.  An exactly precise proof would be written with $\epsilon$s and $\delta$s, but we think the student is more likely to undestand the idea presented this way.
+
+\begin{proof}[Proof Sketch]
+
+Since $g'(x)$ exists, for $h$ small, 
+$$\frac{g(x+h)-g(x)}{h}\approx g'(x).$$
+
+Here the $\approx$ symbol means ``is approximately''.  Therefore, 
+$$g(x+h)-g(x)\approx hg'(x)$$
+and 
+$$g(x+h)\approx hg'(x)+g(x).$$
+
+To compute the derivative of $f(g(x))$ at $x$, the difference quotient is $$\frac{f(g(x+h))-f(g(x))}{h}.$$
+For $h$ small, 
+$$ 
+\frac{f(g(x+h))-f(g(x))}{h} \approx \frac{f(g(x) + hg'(x))-f(g(x))}{h}.$$
+Observe we have just replaced $g(x+h)$ with $g(x) + hg'(x)$.  Next we multiply top and bottom by $g'(x)$ and we have 
+\begin{equation} \label{3240972392408}
+\frac{f(g(x) + hg'(x))-f(g(x))}{hg'(x)} g'(x).
+\end{equation}
+
+The quotient on the left in  (\ref{3240972392408}) almost has the form of a difference quotient.  As $h\to 0$, we also see that $hg'(x)\to 0$ so 
+
+$$\lim_{h\to 0} \frac{f(g(x) + hg'(x))-f(g(x))}{hg'(x)}  = \lim_{h\to 0} \frac{f(g(x) + h)-f(g(x))}{h} = f'(g(x)).$$
+Thus $\frac{d}{dx}f(g(x)) = f'(g(x))g'(x)$.
+\end{proof}
+
+
 
 
 \section{Practice Quiz}
