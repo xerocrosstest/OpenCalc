@@ -2,7 +2,14 @@
 \usepackage{amsmath, amsthm}
 \usepackage{amssymb}
 \usepackage{tikz}
-
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 
 \usepackage{xcolor}
 
@@ -235,10 +242,6 @@ The ``topological'' method is an alternative point of view that will make the de
 
 \subsection{Exercises}
 
-Ask me for help at the beginning of class or during office hours if you need help with these.
-
-
-
 \begin{enumerate}
 \item
 Let $f(x)=\cos(x)$.  What is $f^{-1}(\{1\})$.  Here $\{1\}$ means the set containing just the number 1. Is $\{1\}$ open?  Is $f^{-1}(\{1\})$ open?
@@ -360,7 +363,7 @@ $$g(x+h)\approx hg'(x)+g(x).$$
 To compute the derivative of $f(g(x))$ at $x$, the difference quotient is $$\frac{f(g(x+h))-f(g(x))}{h}.$$
 For $h$ small, 
 $$ 
-\frac{f(g(x+h))-f(g(x))}{h} \approx \frac{f(g(x) + hg'(x))-f(g(x))}{h}.$$
+\frac{f(\highlight{g(x+h)})-f(g(x))}{h} \approx \frac{f(\highlight{g(x) + hg'(x)})-f(g(x))}{h}.$$
 Observe we have just replaced $g(x+h)$ with $g(x) + hg'(x)$.  Next we multiply top and bottom by $g'(x)$ and we have 
 \begin{equation} \label{3240972392408}
 \frac{f(g(x) + hg'(x))-f(g(x))}{hg'(x)} g'(x).
