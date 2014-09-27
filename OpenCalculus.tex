@@ -1,6 +1,7 @@
 \documentclass[11pt]{book} 
 \usepackage{amsmath, amsthm}
 \usepackage{amssymb}
+\usepackage{tikz}
 
 
 \usepackage{xcolor}
@@ -9,6 +10,9 @@
   \colorbox{yellow!50}{$\displaystyle#1$}}
 
 \newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+
+
 \newenvironment{definition}[1][Definition]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 \newtheorem{example}{Example}
@@ -330,6 +334,9 @@ Explain in words why $$\lim_{x\to 0} x^2 \sin(2\pi/x)=0$$ (meaning the limit exi
 \chapter{Derivatives}  
 
 
+
+
+
 \section{The Chain Rule}
 
 
@@ -367,9 +374,6 @@ It only matters that those two numbers are the \emph{same} and that they are goi
 
 Thus $\frac{d}{dx}f(g(x)) = f'(g(x))g'(x)$.
 \end{proof}
-
-
-
 
 \section{Practice Quiz}
 
@@ -439,6 +443,115 @@ Compute the derivative $\frac{d}{dx} \sin^{-1}(x)$ using the chain rule/implicit
 
 
 \end{enumerate}
+
+
+
+\section{Extreme Values}
+
+
+We say a function $f$ has a \emph{local maximum} at a point $a$ if there is an interval $(a-\epsilon,a+\epsilon)$ around $a$ where $f(x)\leq f(a)$ for all $x$ in $(a-\epsilon,a+\epsilon)$ and in the domain of $f$. 
+
+Another way to say this is $f(x)\leq f(a)$ in a neighborhood of $a$.  
+
+A \emph{local maximum} is defined similarly.  
+
+
+We say $f$ has a \emph{global maximum} at $a$ if $f(x)\leq f(x)$ for all $x$ in the domain of $f$.  
+
+A \emph{global maximum} is defined similarly.  
+
+
+
+\begin{prop}
+If $f$ is defined on an interval $[a,b]$ and $f$ has a local minimum or a local maximum at $c \in [a,b]$, where $c$ is not one of the endpoints, and if $f$ is differentiable at $c$ then $f'(c)=0$.   
+\end{prop}
+
+Why did we assume $c$ isn't an endpoint?  Consider $f(x)=x^2$ restricted to the domain $[-2,2]$.  Then $f$ has a local (and global) max at $x=2$, but the derivative at $2$ is $f'(2)=4$.  
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (-3,0) -- (3,0) node[right] {$x$};
+  \draw[<->] (0,-1) -- (0,4.2) node[above] {$y$};
+\draw (-2,-0.1) -- (-2,0.1)
+node[below=0.1in] {-2};
+\draw (2,-0.1) -- (2,0.1)
+node[below=0.1in] {2};
+\node[color=blue] at (-2,4) {\textbullet};
+\node[color=blue] at (2,4) {\textbullet};
+\draw[scale=1,domain=-2:2,smooth,variable=\x,blue] plot ({\x},{\x*\x});
+\end{tikzpicture}
+\end{center}
+
+Is it possible that $f$ has a local maximum at $a$ but $f'(a)$ doesn't exist?  Consider $f(x)=|x|$, which has a local minimum at 0, but $f'(0)$ does not exist.  So we have to assume $f'(a)$ exists.  
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (-3,0) -- (3,0) node[right] {$x$};
+  \draw[<->] (0,-1) -- (0,3) node[above] {$y$};
+\draw (-2,-0.1) -- (-2,0.1)
+node[below=0.1in] {-2};
+\draw (2,-0.1) -- (2,0.1)
+node[below=0.1in] {2};
+\node[color=blue] at (-2,2) {\textbullet};
+\node[color=blue] at (2,2) {\textbullet};
+\draw[scale=1,domain=-2:2,smooth,variable=\x,blue] plot ({\x},{abs(\x)});
+\end{tikzpicture}
+\end{center}
+
+\begin{proof}
+Assume $f$ has a local maximum at $c$.  We consider the limit of $\frac{f(c+h)-f(c)}{h}$ as $h\to 0$ from the right and from the left.  
+
+If $h>0$ and $h$ is small enough, then 
+$$\frac{f(c+h)-f(c)}{h}\leq 0.$$
+Consider the slope of the secant line in the following illustration.
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (-2,0) -- (3,0) node[right] {$x$};
+  \draw[<->] (0,-1) -- (0,2) node[above] {$y$};
+
+\draw (pi/2,-0.1) -- (pi/2,0.1)
+node[below=0.1in] {$\pi/2$};
+
+\draw (-1,1.629) -- (3,0.65);
+\node[color=blue] at (pi/2,1) {\textbullet};
+\node[color=red] at (2.07,.877) {\textbullet};
+\draw[scale=1,domain=-2:3,smooth,variable=\x,blue] plot ({\x},{sin(\x r)});
+\end{tikzpicture}
+\end{center}
+
+Thus $$\lim_{h\to 0^+}\frac{f(c+h)-f(c)}{h}\leq 0.$$
+
+On the other hand, if $h<0$ then 
+$$0\leq \frac{f(c+h)-f(c)}{h}.$$
+
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (-2,0) -- (3,0) node[right] {$x$};
+  \draw[<->] (0,-1) -- (0,2) node[above] {$y$};
+
+\draw (pi/2,-0.1) -- (pi/2,0.1)
+node[below=0.1in] {$\pi/2$};
+
+\draw (-1,.36) -- (3,1.35);
+\node[color=blue] at (pi/2,1) {\textbullet};
+\node[color=red] at (1.07,.877) {\textbullet};
+
+\draw[scale=1,domain=-2:3,smooth,variable=\x,blue] plot ({\x},{sin(\x r)});
+\end{tikzpicture}
+\end{center}
+Thus $$0\geq \lim_{h\to 0^-}\frac{f(c+h)-f(c)}{h}.$$
+Since the limit exists, the right hand limit and the left hand limit are the same, so 
+$$0\leq \lim_{h\to 0^-}\frac{f(c+h)-f(c)}{h} \leq 0$$
+so $f'(c)=0$.
+
+The argument is the same when $f$ has a local minimum at $c$.  The only difference is that the inequalities are flipped.  
+
+\end{proof}
+
+
+
 
 
 
