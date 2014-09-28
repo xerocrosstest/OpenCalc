@@ -80,7 +80,7 @@ Baton Rouge, LA \\
 
 \chapter*{Contributors}
 
-\section*{Adam Cross}
+\section*{Adam Cross: Editor-in-Chief}
 
 \begin{tabular}{lp{7cm}}
 \raisebox{-.6\height}{\includegraphics[width=2in]{AdamCross_pic.jpg}} & PhD student at LSU.  Calculus teacher.  Author of \textit{A Quick Tour of Fourier Series and Lie Groups}.
@@ -426,7 +426,125 @@ Explain in words why $$\lim_{x\to 0} x^2 \sin(2\pi/x)=0$$ (meaning the limit exi
 
 \chapter{Derivatives}  
 
+\section{Slope of the Tangent Line}
 
+Given some function $f$, any two points on the curve determine a \emph{secant} line.  In the image below, $f(x)=\sin(x)$ and the two points pictured are $(\pi/2,1)$ and $(\pi/2+.5,\sin(\pi/2+.5))$.  
+
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (0,0) -- (6,0) node[right] {$x$};
+  \draw[<->] (0,-1) -- (0,2) node[above] {$y$};
+
+\draw (pi,-.2) -- (pi,.2); 
+\node at (pi,-.5) {$\pi/2$};
+
+%\draw (-1*2,1.629*2) -- (3*2,2*0.65);
+
+\node[color=blue] at (2*pi/2,2*1) {\textbullet};
+\node[color=red] at (2*2.07,2*.877) {\textbullet};
+\draw[scale=2,domain=0:3,smooth,variable=\x,blue] plot ({\x},{sin(\x r)});
+
+\draw[scale=2,domain=0:3,smooth,variable=\x,blue] plot ({\x},{1.38703-0.246392*\x});
+
+\end{tikzpicture}
+\end{center}
+
+Recall how to conpute the slope of this line:
+
+$$\frac{f(\pi/2+.5) - f(\pi/2)}{\pi/2+.5 - \pi/2}.$$
+In this example, we think of $(\pi/2,1)$ as a fixed point we are interested in, and we picked another point close to it.  The $x$-coordinate differed by only a small number, 0.5.  It's traditional to use the letter $h$ to refer to that small number.  
+
+If we choose an even smaller $h$, we get a different secant line.  Consider $h=0.1$.  In the next image, we have zoomed in close to $\pi/2$ and drawn the two secant lines given by $h=0.5$ and $h=0.3$.  
+
+
+\begin{center}
+\begin{tikzpicture}
+\draw[<->] (-6,8) -- (6,8) node[right] {$x$};
+
+
+%  \draw[<->] (0,-1) -- (0,2) node[above] {$y$};
+
+%\draw (pi,-.2) -- (pi,.2); 
+%\node at (pi,-.5) {$\pi/2$};
+
+%\draw (-1*2,1.629*2) -- (3*2,2*0.65);
+
+\node[color=blue] at (0,10) {\textbullet};
+
+
+\node[color=red] at (10*.5,10*.877) {\textbullet};
+
+\node[color=red] at (10*.3,10*.9553) {\textbullet};
+
+\draw[scale=10,domain=-.5:.5,smooth,variable=\x,blue] plot ({\x},{sin((\x+pi/2) r)});
+
+\draw[scale=10,domain=-.5:.5,smooth,variable=\x,blue] plot ({\x},{1.38703-0.246392*(\x+pi/2)});
+
+\draw[scale=10,domain=-.5:.5,smooth,variable=\x,blue] plot ({\x},{1.23386-0.148878*(\x+pi/2)});
+
+
+\end{tikzpicture}
+\end{center}
+
+Naturally, one might ask what happens as $h$ gets smaller and smaller.  Imagine the point at $(x+h,f(x+h))$ getting closer and closer to $(x,f(x)$.  What happens to the secant lines in the limit?  And what happens to the slope?  
+
+In the example pictured, in the limit the secant lines go to a horizontal line.  We call this the tangent line.
+\begin{center}
+\begin{tikzpicture}
+\draw[<->] (-6,8) -- (6,8) node[right] {$x$};
+
+
+%  \draw[<->] (0,-1) -- (0,2) node[above] {$y$};
+
+%\draw (pi,-.2) -- (pi,.2); 
+%\node at (pi,-.5) {$\pi/2$};
+
+%\draw (-1*2,1.629*2) -- (3*2,2*0.65);
+
+\node[color=blue] at (0,10) {\textbullet};
+
+
+\node[color=red] at (10*.5,10*.877) {\textbullet};
+
+\node[color=red] at (10*.3,10*.9553) {\textbullet};
+
+\draw[scale=10,domain=-.5:.5,smooth,variable=\x,blue] plot ({\x},{sin((\x+pi/2) r)});
+
+\draw[scale=10,domain=-.5:.5,smooth,variable=\x,blue] plot ({\x},{1.38703-0.246392*(\x+pi/2)});
+
+\draw[scale=10,domain=-.5:.5,smooth,variable=\x,blue] plot ({\x},{1.23386-0.148878*(\x+pi/2)});
+
+\draw[scale=10,domain=-.5:.5,smooth,variable=\x,red] plot ({\x},{1});
+\end{tikzpicture}
+\end{center}
+
+
+\begin{definition}
+The \emph{tangent line of $f$ at $x$} is the limit of the secant line through $(x,f(x))$ and $(x+h,f(x+h))$ as $h$ goes to 0.  
+\end{definition}
+
+If the limit does not exist, then the tangent line is undefined.
+
+In general the slope of the tangent line is the limit of the slope of the secant line:
+$$\lim_{h\to 0} \frac{f(x+h)-f(x)}{h}$$
+
+
+
+
+\begin{definition}
+The \emph{derivative of $f$ at $a$} is 
+$$\lim_{h\to 0} \frac{f(a+h)-f(a)}{h}$$
+if the limit exists and is finite.
+\end{definition}
+
+If the limit doesn't exist or if it is infinite, we say the function is not differentiable at $a$.
+
+In this section, we have learned one interpretation of the derivative of $f$ at $a$.  It is the slope of the tangent line at $a$.  
+
+This expression 
+$$\frac{f(x+h)-f(x)}{h}$$
+is often called a \emph{difference quotient}.  As we have seen here, it's nothing but the familiar slope formula.  
 
 
 
