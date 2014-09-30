@@ -1,9 +1,18 @@
 \documentclass[11pt]{book} 
+
+\usepackage[paperheight=9in,paperwidth=7in]{geometry}
+
 \usepackage{amsmath, amsthm}
 \usepackage{amssymb}
+\usepackage{color}
 \usepackage{tikz}
+\usepackage{pgfplots}
 \usetikzlibrary{arrows}
 \usepackage{hyperref}
+
+\usepackage{graphicx}
+
+
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -11,6 +20,9 @@
     linkcolor=black,
     urlcolor=black
 }
+\definecolor{dandelion}{RGB}{240,255,48}
+
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
 \usepackage[english]{babel}
 
 \addto\captionsenglish{
@@ -33,7 +45,7 @@
 \numberwithin{example}{chapter} 
 
 
-\usepackage{graphicx}
+
              % Book class in 11 points
 \parindent0pt  \parskip10pt             % make block paragraphs
 \raggedright                            % do not right justify
@@ -44,12 +56,30 @@
 \date{\today}                           %   Use current date. 
 
 % Note that book class by default is formatted to be printed back-to-back.
-\begin{document}                        % End of preamble, start of text.
-\frontmatter                            % only in book class (roman page #s)
+
+\usepackage[dvipsnames,prologue,table]{pstricks}
+\usepackage{pst-text}
+\usepackage{pst-char}
+\usepackage{pst-grad}
+
+
+
+\begin{document}  
+\frontmatter  
+
+%\newgeometry{margin=0in}
+%\thispagestyle{empty}
+%\setlength\parindent{0pt}
+%\restoregeometry
+
+
+\clearpage
+\pagenumbering{roman}
+                          % only in book class (roman page #s)
 \maketitle                              % Print title page.
 
 
-\pagestyle{empty}
+\thispagestyle{empty}
 %% copyrightpage
 \begingroup
 \footnotesize
@@ -76,7 +106,7 @@ Baton Rouge, LA \\
 \endgroup
 \clearpage
 
-\pagestyle{empty}
+\thispagestyle{empty}
 
 \chapter*{Contributors}
 
@@ -107,11 +137,91 @@ Baton Rouge, LA \\
 
 \mainmatter                             % only in book class (arabic page #s)
 
+\pagenumbering{arabic}
+
 \part{A Part Heading}                   % Print a "part" heading
 
 
 
 \chapter{Limits}     
+
+\section{Introduction to Limits}
+
+Everything in calculus is a limit, and a thorough understanding of limits is possibly the most challenging aspect of a first course in calculus.  But it is well worth your trouble to learn it, because later when you want to understand derivatives and integrals, well, those things are limits too.  
+
+The basic idea of limits is simple.  If you have some function $f$, you ask yourself what value $f(x)$ is approaching as $x$ gets closer and closer to some number $a$.  The notation we use for that is $$\lim_{x\to a} f(x)$$.  You should learn that notation and learn how to say it out loud.  It is read ``the limit of f of x as x approaches a''.  Or you could also say ``as x goes to a''.  
+
+Spoiler alert: when $f$ is \emph{continuous}, then $$\lim_{x\to a} f(x)$$ is just $f(a)$.  Think about that for a moment and convince yourself that it's not at all surprising.  Imagine $f(x)=x^2$.  Ask yourself what value $f(x)$ is approaching as $x$ goes to $2$.  Obviously, $f(x)$ is going to 4.
+
+Limits are tricky when the functions are not continuous.  And students, I promise you we don't just make up pointless difficult ideas for no reason.  Derivatives are limits, and when we start computing derivatives, you usually won't be able to just plug in $x=a$ and see what the number is because usually if you plug in $x=a$ you'll get $0/0$, which is nonsense.  So you have to understand limits when the function \hilight{is not continuous}.
+
+
+\begin{example} Consider the function $f$ in the graph. What is $\lim_{x\to 2} f(x)$?
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (-3,0) -- (3,0) node[right] {$x$};
+  \draw[<->] (0,-3) -- (0,3) node[above] {$y$};
+\draw (-0.1,2) -- (.1,2);
+\draw (-0.1,1) -- (.1,1);
+\draw (-0.1,-2) -- (.1,-2);
+
+\node at (2,3) {$f$};
+
+\node at (2,-0.4) {$2$};
+
+
+
+\draw (2,-.2) -- (2,0.2);
+
+\node at (-0.4,2) {$4$};
+\node at (-0.4,1) {$2$};
+
+
+\draw[scale=1,domain=-3:2,smooth,variable=\x,blue] plot ({\x},{(2/3.33)*(-(\x^3/3-\x^2/2-2*\x+2)+2)});
+\draw[xscale=1,domain=2:4,smooth,variable=\x,blue] plot ({\x},{4-\x});
+
+\draw (2,2) circle[radius=3pt];
+\fill[white] (2,2)  circle[radius=3pt];
+
+\fill[black] (2,1)  circle[radius=3pt];
+
+
+\end{tikzpicture}
+
+
+\end{center}
+
+\end{example}
+
+
+ The empty dot at $(2,4)$ means there is a hole in the graph at that point.  The filled-in dot at $(2,2)$ means that $f(2)=2$.  But when we evaluate $\lim_{x\to 2} f(x)$ the actual value at $x=2$ doesn't matter.  All that matters is where $f(x)$ is going when $x$ goes to 2.
+ 
+ We haven't defined limits yet, but we will.  In the meantime, we hope you can see that if $x$ is near 2 (but not equal to 2) then $f(x)$ is near 4.  Understanding the idea of that is very imporant to your success in calculus.    
+
+\section{The Formal Definition of a Limit}
+
+We will present the formal definition of a limit in a very traditional way.  It will probably seem very confusing at first, but we hope that in time you will see that it's just a mathematical way to say what we illustrated in the previous section. 
+
+\begin{definition}
+For any function $f$, we say the limit as $x$ approaches $a$ of $f(x)$ equals $L$, and we write 
+$$\lim_{x\to a}f(x)=L,$$ 
+if for any $\epsilon>0$ there exists $\delta>0$ so that for all $x$ where $0< |x-a|<\delta$ we have $|f(x)-L|<\epsilon$.  
+\end{definition}
+
+The use of $\epsilon$ and $\delta$ in this definition is very customary.  They are Greek letters, but you shouldn't be alarmed.  They are just used to mean small numbers.  In words, the definition means that $f(x)$ is close to $L$ when $x$ is close to $a$.  
+
+But ``close to'' is vague, right?  What does ``close to'' mean?  Mathematicians don't like to be vague.  We like to be exactly precise so there is no room for misunderstanding.  
+
+The way we specify that $x$ is close to $a$ is by saying that $|x-a|<\delta$.  You should understand that $|x-a|$ is a distance.  It's the distance between $x$ and $a$.  The expression $|x-a|<\delta$ means that the distance between $x$ and $a$ is not bigger than $\delta$.  
+
+The same is true of $|f(x)-L|<\epsilon$.  The expression   $|f(x)-L|$ is a measure of distance, and saying $|f(x)-L|<\epsilon$ means that the distance between $f(x)$ and $L$ is less than $\epsilon$.  
+
+Study those ideas. Understand them.  
+
+Thus, the definition of the limit means that when $x$ is close enough to $a$, it follows that $f(x)$ is close enough to $L$.  And what does ``close enough'' mean?  It means you can make it as small as you want.  No matter how close you want it, you can make $f(x)$ that close to $L$ by making $x$ close enough to $a$.  
+
+And we always assume $x\neq a$.  Note that condition in the definition of the limit: for all $x$ where $\highlight{0< |x-a|}<\delta$ we have $|f(x)-L|<\epsilon$.  We assume $0<|x-a|$ because we want to allow the possibility that $f(a)\neq \lim_{x\to a} f(x)$.  Of course, those two things are equal when $f$ is continuous, and that is the definition of continous, but we don't want to study just continuous function.  
 
 
 \section{Topology for Calculus, Lesson 1}
@@ -353,6 +463,40 @@ Let $f(x)=x^2$.  Is $f$ continuous?  Let $U=(1,2)$. What is $f^{-1}(U)$?  Is $f^
 \end{enumerate}
 
 
+\section{Extreme Value Theorem}
+
+
+The Extreme Value Theorem is one of the foundational beams holding calculus up.  It's easy to state but very hard to prove (from the perspective of a calculus student).
+
+\begin{theorem}
+If $f$ is continuous on a closed interval $[a,b]$ then $f$ attains a global maximum and a global minimum.  
+\end{theorem}
+
+The word \emph{attains} in this theorem has a precise meaning.  We mean there is some $x$ in $[a,b]$ where $f(x)\leq f(a)$ for all $x\in [a,b]$.  We use \emph{attains} here to emphasize that $f$ actually equals its maximum at some point.  Contrast this with, for example, the function $arctan(x)$ which is bounded above by $\pi/2$ but never actually attains that value.  
+
+In particular, this implies that $f$ is bounded.  
+
+The Extreme Value Theorem is deep and topological in nature.  It's arguably the deepest theorem a calculus student would see, and therefore books tend to omit the proof.  
+
+For the student who feels up to the challenge, we will try to push him in the right direction. 
+
+The underlying idea behind the theorem is that a continuous function maps compact sets to compact sets, and in the real numbers, the compact sets are exactly the closed, bounded sets.  Thus, since $[a,b]$ is closed and bounded, $f([a,b])$ is also a closed, bounded set.
+
+To prove the statement, however, we would make essential use of what \emph{compact} means.  We present the definition to give the reader an idea of the depth of the waters here.
+
+\begin{definition}
+A set $C$ is \emph{compact} if given any family $\{U_i\}$ of open sets that covers $C$, there is a finite subcollection $\{U_1, \ldots, U_p\}$ that covers $C$.  
+\end{definition}
+
+Here, ``cover'' means that $C$ is in the union.  
+
+
+An alternative proof of the Extreme Value Theorem might rely on the statement that any sequence $\{x_i\}$ of points in $[a,b]$ has a convergent subsequence.  
+
+
+
+
+
 
 \section{Exercises}
 
@@ -453,7 +597,7 @@ Given some function $f$, any two points on the curve determine a \emph{secant} l
 Recall how to conpute the slope of this line:
 
 $$\frac{f(\pi/2+.5) - f(\pi/2)}{\pi/2+.5 - \pi/2}.$$
-In this example, we think of $(\pi/2,1)$ as a fixed point we are interested in, and we picked another point close to it.  The $x$-coordinate differed by only a small number, 0.5.  It's traditional to use the letter $h$ to refer to that small number.  
+In this example, we think of $(\pi/2,1)$ as a fixed point we are interested in, and we pick another point close to it.  The $x$-coordinate differed by only a small number, 0.5.  It's traditional to use the letter $h$ to refer to that small number.  
 
 If we choose an even smaller $h$, we get a different secant line.  Consider $h=0.3$.  In the next image, we have zoomed in close to $\pi/2$ and drawn the two secant lines given by $h=0.5$ and $h=0.3$.  
 
@@ -533,14 +677,18 @@ $$\lim_{h\to 0} \frac{f(x+h)-f(x)}{h}$$
 
 
 \begin{definition}
-The \emph{derivative of $f$ at $a$} is 
-$$\lim_{h\to 0} \frac{f(a+h)-f(a)}{h}$$
+The \highlight{\emph{derivative of $f$ at $a$}} is 
+$$f'(a)=\lim_{h\to 0} \frac{f(a+h)-f(a)}{h}$$
 if the limit exists and is finite.
 \end{definition}
 
-If the limit doesn't exist or if it is infinite, we say the function is not differentiable at $a$.
+If the limit doesn't exist or if it is infinite, we say the function is not \emph{differentiable} at $a$.
 
-In this section, we have learned one interpretation of the derivative of $f$ at $a$.  It is the slope of the tangent line at $a$.  
+Students should memorize this definition.  It's very basic to an understanding of calculus.
+
+We often use the notation $f'(x)$ for the derivative of $f$ at x.  We also use the notation $\frac{d}{dx}f(x)$ for the derivative of $f$ at $x$.  The two notations are used interchangeably.  Usually, when we use the $\frac{d}{dx}$ it's because we want to be explicit that we are taking the derivative \emph{with respect to $x$}.  We will talk about that more later.
+
+In this section, we have learned one interpretation of the derivative of $f$ at $a$.  It is the slope of the tangent line at $a$.  We will learn some other interpretations in later sections.   
 
 This expression 
 $$\frac{f(x+h)-f(x)}{h}$$
@@ -549,7 +697,7 @@ is often called a \emph{difference quotient}.  As we have seen here, it's nothin
 
 \begin{example}
 What is the derivative of $f(x)=x^{1/3}$ at 0?
-
+\end{example}
 
 \begin{center}
 \begin{tikzpicture}
@@ -576,13 +724,213 @@ What is the derivative of $f(x)=x^{1/3}$ at 0?
 
 Since the limit is infinite, the derivative does not exist.  This corresponds to the vertical tangent line at 0.
 
-
+\begin{example}
+Let $f(x)=x^2$ with the domain $[-1,1]$.  What is $f'(1)$?
 
 \end{example}
 
 
 
+\section{Ways a Function Might Not be Differentiable}
 
+
+In the previous section, we saw the function $f(x)=x^{1/3}$, which is not differentiable at 0 because the tangent line has infinite slope at that point.  
+
+In this section, we will consder other ways a function may fail to be differentiable.  In all cases, however, this reduces to showing that
+$$\lim_{h\to 0}\frac{f(a+h)-f(a)}{h}$$
+is infinite or does not exist.
+
+\subsection{A Sharp Point}
+
+The function $f(x)=|x|$ is not differentiable at 0.  The intuitive reason is that $f$ has a point there.  You might say there is no way to define a tangent line at 0.  
+
+That kind of reasoning may be acceptable in a high school calculus class, but at the college level, you should be able to show from the definition that the derivative does not exist.
+
+\begin{example}
+Show that function $f(x)=|x|$ is not differentiable at 0.
+\end{example}
+
+How do we start?  (Try to answer before you continue reading.)
+
+We write down the definition of the derivative at 0:
+$$f'(0) = \lim_{h\to 0}\frac{|0+h|-|0|}{h}= \lim_{h\to 0}\frac{|h|}{h}$$
+
+One way a limit may fail to exist is if the left hand limit and the right hand limit are not the same.  Recall that when $h>0$ we can write $|h|=h$ and when $h<0$ we can write $|h|=-h$.  Thus
+$$\lim_{h\to 0^+}\frac{|h|}{h}=\lim_{h\to 0+}\frac{h}{h}=1$$ 
+and 
+$$\lim_{h\to 0^-}\frac{|h|}{h}=\lim_{h\to 0+}\frac{-h}{h}=-1.$$ 
+
+
+
+Since the left and right limits are not equal, the limit does not exist, so the derivative does not exist at 0.  
+
+This argument is completely sufficient, but let's also think about secant lines.  If $h$ is any positive number, then the secant line through the points $(0,0)$ and $(h,|h|)$ is always $y=x$.  That's true no matter how small $h$ is, so long as it is positive. 
+
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (-2,0) -- (2,0);
+  \draw[<->] (0,-1) -- (0,2) ;
+
+
+\draw[<->, ultra thick, red] (-1,-1) -- (1,1) ;
+
+\node[color=blue] at (0,0) {\textbullet};
+
+\node[color=red] at (.5,.5) {\textbullet};
+
+\draw[scale=1,domain=-2:2,smooth,variable=\x,blue] plot ({\x},{abs(\x)});
+
+
+
+
+\end{tikzpicture}
+\end{center}
+
+
+Now think about a negative $h$.  In this case, the secant line has slope -1 no matter how small $h$ is.
+
+
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[<->] (-2,0) -- (2,0);
+  \draw[<->] (0,-1) -- (0,2) ;
+
+
+\draw[<->, ultra thick, red] (-1,1) -- (1,-1) ;
+
+\node[color=blue] at (0,0) {\textbullet};
+
+\node[color=red] at (-.5,.5) {\textbullet};
+
+\draw[scale=1,domain=-2:2,smooth,variable=\x,blue] plot ({\x},{abs(\x)});
+\end{tikzpicture}
+\end{center}
+So the secant lines don't approach any single tangent line.  
+
+\subsection{Oscillating Secant}
+
+
+Consider $f(x)=x\sin(1/x)$.  This function oscillates infinitely many times between the two lines $y=x$ and $y=-x$ so that around $x=0$ you can't even really graph it, but we can give the idea of it in the following image.
+
+
+
+\begin{center}
+\begin{tikzpicture}
+
+
+%\draw[scale=100,domain=0.001:0.1,smooth,samples=50,variable=\x,blue] plot ({\x},{1/100*sin((1/\x) r)});
+
+\begin{axis}[samples=1000,
+axis x line=center,
+y=12.5in,
+x=25in,
+axis y line=center,
+xmin=0,
+xmax=0.1,
+ymin=-.1,
+ymax=.1,restrict y to domain =-2:2]
+\addplot[very thick,blue,domain=0.0004:.1]plot (\x, {\x*sin((1/\x r))});
+
+\addplot[ultra thick,blue,domain=0:0.070735]plot (\x, {\x});
+
+\addplot[ultra thick,blue,domain=0:0.090945681766]plot (\x, {-\x});
+
+
+\end{axis}
+\draw[red,fill=red] (0.070735*25in,1.25in +12.5*0.070735 in) circle (.05in);
+
+\draw[red,fill=red] (0,1.25in) circle (.05in);
+
+\draw[red,fill=red] (0.090945681766*25in,.113 in) circle (.05in);
+
+
+
+\end{tikzpicture}
+\end{center}
+
+No matter how much you zoom it, it still looks basically the same: the oscillations bunch up tighter and tighter at 0.  Also, no matter how close we zoom in, there are some values of $x$ where $\sin(1/x)=1$ and others where $\sin(1/x)=-1$.  Those are places where $x\sin(1/x)$ touches the bounding lines $y=x$ and $y=-x$.
+
+In the figure, we illustrated two secant lines.  At $x_n=\frac{1}{\pi(4n+1)}$ we have $f(x_n)=x_n$.  In the figure, we have drawn $(x_2,f(x_2)$ and you can see that the secant line between $(0,0)$ and $(x_2,f(x_2)$ has slope 1.  
+
+However, at $z_n=\frac{2}{\pi(4n-1)}$ we have $f(z_n)=-z_n$.  We have drawn the point $(z_2,f(z_2)$  The secant line between $(0,0)$ and $(z_2,f(z_2)$ has slope -1.  
+
+The derivative of $f$ at 0 does not exist in this example because no matter how close $h$ is to 0, there are always some values of $h$ where 
+$$\frac{f(h)-f(0)}{h}=1$$
+and some values of $h$ where 
+$$\frac{f(h)-f(0)}{h}=-1.$$
+Since they are not zeroing in toward a single number, the limit does not exist.  
+
+Contrast with the function $f(x)=x^2\sin(1/x)$ which \emph{is} differentiable at 0.  
+
+\section{The Product Rule}
+
+\begin{prop}
+If $f$ and $g$ are differentiable at $a$ then 
+$$\frac{d}{dx}[f(x)g(x)]=f'(a)g(a)+f(a)g'(a)$$
+
+\end{prop}
+
+
+
+\begin{center}
+\begin{tikzpicture}
+\filldraw[blue!40!white, draw=black] (0,0) rectangle (4,4);
+\filldraw[blue!40!red, draw=black] (4,0) rectangle (5,4);
+
+\filldraw[blue!40!green, draw=black] (0,4) rectangle (4,5);
+
+\filldraw[cyan!40!green, draw=black] (0,4) rectangle (4,5);
+
+\filldraw[blue!40!green, draw=black] (4,4) rectangle (5,5);
+
+\draw [decorate,decoration={brace,amplitude=10pt}] (-.2,0) -- (-.2,4);
+
+\draw [decorate,decoration={brace,amplitude=10pt}] (-1.3,0) -- (-1.3,5);
+
+\draw [decorate,decoration={brace,amplitude=10pt,mirror}] (0,-.3) -- (4,-.3);
+
+\draw [decorate,decoration={brace,amplitude=10pt,mirror}] (0,-1.3) -- (5,-1.3);
+
+
+\node at (-2.5,2.5) {$f(a+h)$};
+
+\node at (-1,2) {$f(a)$};
+\node at (2,-1) {$g(a)$};
+\node at (2,2) {$A$};
+\node at (-.4,4.5) {$\Delta f$};
+\node at (4.5,2) {$B$};
+
+\node at (2.5,-2) {$g(a+h)$};
+\node at (2,4.5) {$C$};
+\node at (4.5,4.5) {$D$};
+\node at (4.5,-.3) {$\Delta g$};
+\end{tikzpicture}
+\end{center}
+
+
+We present a visual argument that isn't completely general.  My students have found it illuminating. 
+
+By definition, the derivative of $f(x)g(x)$ at $a$ is
+$$\lim_{h\to 0}\frac{f(a+h)g(a+h)-f(a)g(a)}{h}$$
+Let's assume for the moment that the numbers are all positive so we can illustrate them with rectangles as in the figure.
+
+Observe that $f(a+h)g(a+h)$ is the combined area of the four rectangles A, B, C and D while $f(a)g(a)$ is the area of just rectangle A.  Therefore, $f(a+h)g(a+h)-f(a)g(a)$ is the area of B + C + D.  
+
+Now, it's easy to see that $C=g(a)(f(a+h)-f(a))$ and $B=f(a)(g(a+h)-g(a))$ and $D=(f(a+h)-f(a))(g(a+h)-g(a))$.  To compute the limit above, we take 
+$$\lim_{h\to 0} \frac{B+C+D}{h}.$$
+
+Now, we see that 
+$$\lim_{h\to 0} \frac{B}{h}=\lim_{h\to 0} \frac{f(a)(g(a+h)-g(a))}{h}=f(a)g'(a).$$
+Similarly
+$$\lim_{h\to 0} \frac{C}{h}=\lim_{h\to 0} \frac{g(a)(g(a+h)-g(a))}{h}=g(a)f'(a).$$
+Finally
+$$\lim_{h\to 0} \frac{D}{h}=\lim_{h\to 0} \frac{g(a+h)-g(a)}{h}(f(a+h)-f(a))=0.$$
+
+Therefore the derivative at $a$ is $f(a)g'(a)+g(a)f'(a)$.
+
+Note that to draw the visual in terms of areas of rectangles, we made assumptions about things being positive, but that really played no role in the argument.  $f(a+h)g(a+h)-f(a)g(a) = $
 
 \section{The Chain Rule}
 
